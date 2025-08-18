@@ -1,0 +1,43 @@
+<div class="product-form-container">
+  <h2>{{ isEditMode ? 'Edit Product' : 'Add Product' }}</h2>
+
+  <mat-spinner *ngIf="isLoading" style="margin: 20px auto; display: block;"></mat-spinner>
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" required>
+      <mat-error *ngIf="productForm.get('name')?.hasError('required')">
+        Name is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Price</mat-label>
+      <input matInput formControlName="price" required type="number">
+      <mat-error *ngIf="productForm.get('price')?.hasError('required')">
+        Price is required
+      </mat-error>
+      <mat-error *ngIf="productForm.get('price')?.hasError('pattern')">
+        Price must be a number
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Quantity</mat-label>
+      <input matInput formControlName="quantity" required type="number">
+      <mat-error *ngIf="productForm.get('quantity')?.hasError('required')">
+        Quantity is required
+      </mat-error>
+      <mat-error *ngIf="productForm.get('quantity')?.hasError('pattern')">
+        Quantity must be a number
+      </mat-error>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="productForm.invalid || isLoading">
+      {{ isEditMode ? 'Update' : 'Create' }} Product
+    </button>
+    <button mat-button color="accent" routerLink="/products" type="button">Cancel</button>
+  </form>
+</div>
